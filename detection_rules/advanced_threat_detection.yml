@@ -1,0 +1,66 @@
+title: Advanced Threat Detection Suite
+description: Comprehensive detection rules covering MITRE ATT&CK framework
+status: production
+author: Security Operations Center
+date: 2025/05/02
+references:
+  - https://attack.mitre.org/
+  - NIST SP 800-115
+
+rules:
+  - id: T1190-exploit-public-facing
+    name: Exploit Public-Facing Application
+    logsource:
+      product: web_servers
+      category: webserver
+    detection:
+      selection:
+        status_code: 500
+        uri: 
+          - "*.php"
+          - "*.asp"
+          - "*.aspx"
+      timeframe: 1h
+      condition: selection | count() by src_ip > 10
+    falsepositives:
+      - Load testing
+      - Security scanning
+    level: critical
+    tags:
+      - attack.initial_access
+      - attack.t1190
+
+  - id: T1059-command-line
+    name: Suspicious Command-Line Arguments
+    logsource:
+      product: windows
+      service: sysmon
+    detection:
+      selection:
+        EventID: 1
+        CommandLine:
+          - "* -nop -w hidden *"
+          - "* -EncodedCommand *"
+          - "* -e *"
+    level: high
+    tags:
+      - attack.execution
+      - attack.t1059
+
+  - id: T1078-valid-accounts
+    name: Anomalous Account Usage
+    logsource:
+      product: windows
+      service: security
+    detection:
+      selection:
+        EventID: 4624
+      aggregation:
+        function: count_distinct(WorkstationName)
+        threshold: 3
+        timeframe: 24h
+      condition: selection and aggregation
+    level: medium
+    tags:
+      - attack.persistence
+      - attack.t1078

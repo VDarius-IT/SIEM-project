@@ -1,0 +1,30 @@
+# Winlogbeat Configuration
+winlogbeat.event_logs:
+  - name: Security
+    ignore_older: 72h
+    level: informational
+    event_id: 
+      - 4624  # Successful login
+      - 4625  # Failed login
+      - 4688  # Process creation
+      - 5140  # Network share access
+
+output.logstash:
+  hosts: ["logstash-server:5044"]
+  ssl:
+    certificate_authorities: ["c:/certs/ca.crt"]
+    certificate: "c:/certs/client.crt"
+    key: "c:/certs/client.key"
+
+processors:
+  - add_fields:
+      fields:
+        siem_type: "windows"
+        environment: "production"
+
+logging.level: warning
+logging.to_files: true
+logging.files:
+  path: C:/ProgramData/winlogbeat/logs
+  name: winlogbeat
+  keepfiles: 7

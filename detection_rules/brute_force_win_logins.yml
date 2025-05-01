@@ -1,0 +1,21 @@
+title: Windows Brute Force Attack
+description: Detects multiple failed login attempts from a single source
+status: experimental
+author: SIEM Team
+date: 2025/05/02
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4625
+    Status: '0xC000006A'  # Invalid credentials
+  timeframe: 5m
+  condition: selection | count(SubjectUserName) by SourceNetworkAddress > 5
+falsepositives:
+  - Penetration testing
+  - Password spraying tools
+level: high
+tags:
+  - attack.credential_access
+  - attack.t1110
