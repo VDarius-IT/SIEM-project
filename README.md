@@ -1,8 +1,6 @@
 # 🛡️ Enterprise SIEM System
 
-[![Build Status](https://github.com/example/siem/actions/workflows/ci.yml/badge.svg)](https://github.com/example/siem/actions/workflows/ci.yml)
-[![License](https://img.shields.io/github/license/example/siem)](LICENSE)
-[![Version](https://img.shields.io/github/v/release/example/siem)](releases/latest)
+[![License](https://img.shields.io/github/license/siem)](LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-available-brightgreen)](documentation/comprehensive_siem_guide.md)
 [![Contributors](https://img.shields.io/github/contributors/example/siem)](graphs/contributors)
 [![Last Commit](https://img.shields.io/github/last-commit/example/siem)](commits/main)
